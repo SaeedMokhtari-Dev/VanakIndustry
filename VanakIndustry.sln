@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanakIndustry.Web", "VanakIndustry.Web\VanakIndustry.Web.csproj", "{C8D1120D-1438-4CD7-AF76-DF311FAAEA47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanakIndustry.Core", "VanakIndustry.Core\VanakIndustry.Core.csproj", "{5CF989A2-60CA-4506-BDBB-00E2F2661A86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VanakIndustry.DataAccess", "VanakIndustry.DataAccess\VanakIndustry.DataAccess.csproj", "{6718B236-B420-4ACC-B21C-B515F98C2AA7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8D1120D-1438-4CD7-AF76-DF311FAAEA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8D1120D-1438-4CD7-AF76-DF311FAAEA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8D1120D-1438-4CD7-AF76-DF311FAAEA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8D1120D-1438-4CD7-AF76-DF311FAAEA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF989A2-60CA-4506-BDBB-00E2F2661A86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF989A2-60CA-4506-BDBB-00E2F2661A86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF989A2-60CA-4506-BDBB-00E2F2661A86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF989A2-60CA-4506-BDBB-00E2F2661A86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6718B236-B420-4ACC-B21C-B515F98C2AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6718B236-B420-4ACC-B21C-B515F98C2AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6718B236-B420-4ACC-B21C-B515F98C2AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6718B236-B420-4ACC-B21C-B515F98C2AA7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
