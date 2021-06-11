@@ -5,16 +5,17 @@ using System.Collections.Generic;
 
 namespace VanakIndustry.DataAccess.Entities
 {
-    public partial class Person
+    public partial class User
     {
-        public Person()
+        public User()
         {
             ElectionCandidates = new HashSet<ElectionCandidate>();
             ElectionResults = new HashSet<ElectionResult>();
             RefreshTokens = new HashSet<RefreshToken>();
             SelectElectionCandidates = new HashSet<SelectElectionCandidate>();
-            TicketAnswerPeople = new HashSet<Ticket>();
-            TicketPeople = new HashSet<Ticket>();
+            TicketAnswerUsers = new HashSet<Ticket>();
+            TicketUsers = new HashSet<Ticket>();
+            Roles = new HashSet<UserRole>();
         }
 
         public long Id { get; set; }
@@ -49,15 +50,17 @@ namespace VanakIndustry.DataAccess.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
+        public string Email { get; set; }
 
         public virtual Attachment Card { get; set; }
         public virtual Attachment Picture { get; set; }
-        public virtual Role Role { get; set; }
         public virtual ICollection<ElectionCandidate> ElectionCandidates { get; set; }
         public virtual ICollection<ElectionResult> ElectionResults { get; set; }
+        public virtual PasswordResetToken PasswordResetToken { get; set; }
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
         public virtual ICollection<SelectElectionCandidate> SelectElectionCandidates { get; set; }
-        public virtual ICollection<Ticket> TicketAnswerPeople { get; set; }
-        public virtual ICollection<Ticket> TicketPeople { get; set; }
+        public virtual ICollection<Ticket> TicketAnswerUsers { get; set; }
+        public virtual ICollection<Ticket> TicketUsers { get; set; }
+        public virtual ICollection<UserRole> Roles { get; set; }
     }
 }

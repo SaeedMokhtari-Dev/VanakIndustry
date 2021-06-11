@@ -27,11 +27,12 @@ namespace VanakIndustry.DataAccess.Contexts
         public virtual DbSet<ElectionCandidateType> ElectionCandidateTypes { get; set; }
         public virtual DbSet<ElectionLimit> ElectionLimits { get; set; }
         public virtual DbSet<ElectionResult> ElectionResults { get; set; }
-        public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<SelectElectionCandidate> SelectElectionCandidates { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
 
         public async Task ExecuteTransactionAsync(Func<Task> action)
         {
@@ -117,7 +118,7 @@ namespace VanakIndustry.DataAccess.Contexts
             {
                 entity.ToTable("ElectionCandidate");
 
-                entity.HasIndex(e => new { e.ElectionId, e.PersonId, e.ElectionCandidateTypeId }, "IX_ElectionCandidate_Unique")
+                entity.HasIndex(e => new { e.ElectionId, e.UserId, e.ElectionCandidateTypeId }, "IX_ElectionCandidate_Unique")
                     .IsUnique();
 
                 entity.HasOne(d => d.ElectionCandidateType)
@@ -132,11 +133,11 @@ namespace VanakIndustry.DataAccess.Contexts
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ElectionCandidate_Election");
 
-                entity.HasOne(d => d.Person)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.ElectionCandidates)
-                    .HasForeignKey(d => d.PersonId)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ElectionCandidate_Person");
+                    .HasConstraintName("FK_ElectionCandidate_User");
             });
 
             modelBuilder.Entity<ElectionCandidateType>(entity =>
@@ -172,7 +173,7 @@ namespace VanakIndustry.DataAccess.Contexts
             {
                 entity.ToTable("ElectionResult");
 
-                entity.HasIndex(e => new { e.ElectionId, e.PersonId }, "IX_ElectionResult_ElectionPersonUnique")
+                entity.HasIndex(e => new { e.ElectionId, e.UserId }, "IX_ElectionResult_ElectionUserUnique")
                     .IsUnique();
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
@@ -189,24 +190,121 @@ namespace VanakIndustry.DataAccess.Contexts
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ElectionResult_Election");
 
-                entity.HasOne(d => d.Person)
+                entity.HasOne(d => d.User)
                     .WithMany(p => p.ElectionResults)
-                    .HasForeignKey(d => d.PersonId)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ElectionResult_Person");
+                    .HasConstraintName("FK_ElectionResult_User");
             });
 
-            modelBuilder.Entity<Person>(entity =>
+            modelBuilder.Entity<PasswordResetToken>(entity =>
             {
-                entity.ToTable("Person");
+                entity.ToTable("PasswordResetToken");
 
-                entity.HasIndex(e => e.Barcode, "IX_Person")
+                entity.HasIndex(e => new { e.UserId, e.Token }, "IX_PasswordResetToken_Unique")
                     .IsUnique();
 
-                entity.HasIndex(e => e.NationalId, "IX_Person_NationalId")
+                entity.Property(e => e.ResetRequestDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                /*entity.HasOne(d => d.User)
+                    .WithMany(p => p.PasswordResetToken)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PasswordResetToken_User");*/
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.ToTable("RefreshToken");
+
+                entity.HasIndex(e => e.Token, "IX_RefreshToken_Token")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Username, "IX_Person_Username")
+                entity.HasIndex(e => new { e.UserId, e.IsActive }, "IX_RefreshToken_UserActive")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.RefreshTokens)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RefreshToken_User");
+            });
+
+            modelBuilder.Entity<SelectElectionCandidate>(entity =>
+            {
+                entity.ToTable("SelectElectionCandidate");
+
+                entity.HasIndex(e => new { e.ElectionCandidateId, e.UserId }, "IX_SelectElectionCandidate_Unique")
+                    .IsUnique();
+
+                entity.HasOne(d => d.ElectionCandidate)
+                    .WithMany(p => p.SelectElectionCandidates)
+                    .HasForeignKey(d => d.ElectionCandidateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SelectElectionCandidate_ElectionCandidate");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.SelectElectionCandidates)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SelectElectionCandidate_User");
+            });
+
+            modelBuilder.Entity<Ticket>(entity =>
+            {
+                entity.ToTable("Ticket");
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Description).IsRequired();
+
+                entity.Property(e => e.Title)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.AnswerUser)
+                    .WithMany(p => p.TicketAnswerUsers)
+                    .HasForeignKey(d => d.AnswerUserId)
+                    .HasConstraintName("FK_Ticket_User1");
+
+                entity.HasOne(d => d.Attachment)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.AttachmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ticket_Image");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TicketUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ticket_User");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
+
+                entity.HasIndex(e => e.Barcode, "IX_User")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.NationalId, "IX_User_NationalId")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Username, "IX_User_Username")
                     .IsUnique();
 
                 entity.Property(e => e.Address)
@@ -224,6 +322,8 @@ namespace VanakIndustry.DataAccess.Contexts
                     .HasMaxLength(50);
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.FatherName)
                     .IsRequired()
@@ -274,106 +374,30 @@ namespace VanakIndustry.DataAccess.Contexts
                     .HasMaxLength(50);
 
                 entity.HasOne(d => d.Card)
-                    .WithMany(p => p.PersonCards)
+                    .WithMany(p => p.UserCards)
                     .HasForeignKey(d => d.CardId)
-                    .HasConstraintName("FK_Person_Image");
+                    .HasConstraintName("FK_User_Image");
 
                 entity.HasOne(d => d.Picture)
-                    .WithMany(p => p.PersonPictures)
+                    .WithMany(p => p.UserPictures)
                     .HasForeignKey(d => d.PictureId)
-                    .HasConstraintName("FK_Person_Image1");
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.People)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Person_Role");
+                    .HasConstraintName("FK_User_Image1");
             });
 
-            modelBuilder.Entity<RefreshToken>(entity =>
+            modelBuilder.Entity<UserRole>(entity =>
             {
-                entity.ToTable("RefreshToken");
+                entity.ToTable("UserRole");
 
-                entity.HasIndex(e => new { e.PersonId, e.IsActive }, "IX_RefreshToken_PersonActive")
+                entity.HasIndex(e => new { e.Role, e.UserId }, "IX_UserRole_Unique")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Token, "IX_RefreshToken_Token")
-                    .IsUnique();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
-
-                entity.Property(e => e.Token)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Person)
-                    .WithMany(p => p.RefreshTokens)
-                    .HasForeignKey(d => d.PersonId)
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Roles)
+                    .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RefreshToken_Person");
-            });
-
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.ToTable("Role");
-
-                entity.Property(e => e.Role1)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("Role");
-            });
-
-            modelBuilder.Entity<SelectElectionCandidate>(entity =>
-            {
-                entity.ToTable("SelectElectionCandidate");
-
-                entity.HasIndex(e => new { e.ElectionCandidateId, e.PersonId }, "IX_SelectElectionCandidate_Unique")
-                    .IsUnique();
-
-                entity.HasOne(d => d.ElectionCandidate)
-                    .WithMany(p => p.SelectElectionCandidates)
-                    .HasForeignKey(d => d.ElectionCandidateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SelectElectionCandidate_ElectionCandidate");
-
-                entity.HasOne(d => d.Person)
-                    .WithMany(p => p.SelectElectionCandidates)
-                    .HasForeignKey(d => d.PersonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SelectElectionCandidate_Person");
-            });
-
-            modelBuilder.Entity<Ticket>(entity =>
-            {
-                entity.ToTable("Ticket");
-
-                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
-                entity.Property(e => e.Description).IsRequired();
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.AnswerPerson)
-                    .WithMany(p => p.TicketAnswerPeople)
-                    .HasForeignKey(d => d.AnswerPersonId)
-                    .HasConstraintName("FK_Ticket_Person1");
-
-                entity.HasOne(d => d.Attachment)
-                    .WithMany(p => p.Tickets)
-                    .HasForeignKey(d => d.AttachmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ticket_Image");
-
-                entity.HasOne(d => d.Person)
-                    .WithMany(p => p.TicketPeople)
-                    .HasForeignKey(d => d.PersonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Ticket_Person");
+                    .HasConstraintName("FK_UserRole_User");
             });
 
             OnModelCreatingPartial(modelBuilder);
