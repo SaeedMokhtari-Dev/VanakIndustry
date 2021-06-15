@@ -34,19 +34,23 @@ namespace VanakIndustry.Core.Constants
 
             public const string MinPasswordLengthError = "Api.Auth.MinPasswordLengthError";
         }
-        public static class User
+        public static class UserMessage
         {
             public const string UserIdRequired = "Api.User.UserId.Required";
-            public const string CompanyIdRequired = "Api.User.CompanyId.Required";
             public const string FirstNameRequired = "Api.User.FirstName.Required";    
             public const string LastNameRequired = "Api.User.LastName.Required";    
             public const string EmailRequired = "Api.User.Email.Required";    
             public const string FaxRequired = "Api.User.Fax.Required";    
             public const string PhoneRequired = "Api.User.Phone.Required";    
-            public const string FunctionRequired = "Api.User.Function.Required";    
-            public const string PasswordRequired = "Api.User.Password.Required";
-            public const string EmailIsDuplicate = "Api.User.Email.Duplicate";
             public const string MinPasswordLengthError = "Api.User.Password.MinPasswordLengthError";
+            
+            public const string RegisteredSuccessfully = "Api.Company.Register.Successful";
+            public const string AddedSuccessfully = "Api.Company.Add.Successful";
+            public const string EditedSuccessfully = "Api.Company.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.Company.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.Company.Deleted.Successful";
+            
+            public const string ArchiveEntityEditNotAllowed = "Api.Company.ArchivedEntityEdit.NotAllowed";
         }
     }
 }

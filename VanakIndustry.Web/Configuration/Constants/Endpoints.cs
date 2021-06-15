@@ -3,6 +3,7 @@ namespace VanakIndustry.Web.Configuration.Constants
     public static class Endpoints
     {
         /*Auth APIs*/
+        public const string ApiAuthRegister = "/api/auth/register";
         public const string ApiAuthLogin = "/api/auth/login";
         public const string ApiAuthResetPassword = "/api/auth/reset-password";
         public const string ApiAuthValidateResetPasswordToken = "/api/auth/validate-reset-password-token";

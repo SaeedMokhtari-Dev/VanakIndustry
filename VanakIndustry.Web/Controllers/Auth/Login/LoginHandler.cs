@@ -31,7 +31,7 @@ namespace VanakIndustry.Web.Controllers.Auth.Login
 
         protected override async Task<ActionResult> Execute(LoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.IsActive && x.Email.ToUpper() == request.Email.ToUpper().Trim());
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.IsActive && x.Username.ToUpper() == request.Username.ToUpper().Trim());
 
             if (user == null)
             {

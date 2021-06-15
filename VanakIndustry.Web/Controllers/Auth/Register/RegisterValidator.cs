@@ -1,11 +1,11 @@
 using FluentValidation;
 using VanakIndustry.Core.Constants;
 
-namespace VanakIndustry.Web.Controllers.Auth.Login
+namespace VanakIndustry.Web.Controllers.Auth.Register
 {
-    public class LoginValidator : AbstractValidator<LoginRequest>
+    public class RegisterValidator : AbstractValidator<RegisterRequest>
     {
-        public LoginValidator()
+        public RegisterValidator()
         {
             RuleFor(x => x.Username).NotEmpty().EmailAddress().WithMessage(ApiMessages.Auth.UsernameRequired);
             RuleFor(x => x.Password).NotEmpty().WithMessage(ApiMessages.Auth.PasswordRequired);

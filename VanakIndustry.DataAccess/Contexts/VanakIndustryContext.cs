@@ -373,15 +373,32 @@ namespace VanakIndustry.DataAccess.Contexts
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.HasOne(d => d.CandidatePicture)
+                    .WithMany(p => p.UserCandidatePictures)
+                    .HasForeignKey(d => d.CandidatePictureId)
+                    .HasConstraintName("FK_User_Attachment_CandidatePicture");
+
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.UserCards)
-                    .HasForeignKey(d => d.CardId)
-                    .HasConstraintName("FK_User_Image");
+                    .HasForeignKey(d => d.CardId);
+
+                entity.HasOne(d => d.FirstPageCertificate)
+                    .WithMany(p => p.UserFirstPageCertificates)
+                    .HasForeignKey(d => d.FirstPageCertificateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.NationalCard)
+                    .WithMany(p => p.UserNationalCards)
+                    .HasForeignKey(d => d.NationalCardId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Picture)
                     .WithMany(p => p.UserPictures)
-                    .HasForeignKey(d => d.PictureId)
-                    .HasConstraintName("FK_User_Image1");
+                    .HasForeignKey(d => d.PictureId);
+
+                entity.HasOne(d => d.SecondPageCertificate)
+                    .WithMany(p => p.UserSecondPageCertificates)
+                    .HasForeignKey(d => d.SecondPageCertificateId);
             });
 
             modelBuilder.Entity<UserRole>(entity =>

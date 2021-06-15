@@ -51,9 +51,14 @@ namespace VanakIndustry.DataAccess.Entities
         public DateTime ModifiedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
         public string Email { get; set; }
+        public long? CandidatePictureId { get; set; }
 
+        public virtual Attachment CandidatePicture { get; set; }
         public virtual Attachment Card { get; set; }
+        public virtual Attachment FirstPageCertificate { get; set; }
+        public virtual Attachment NationalCard { get; set; }
         public virtual Attachment Picture { get; set; }
+        public virtual Attachment SecondPageCertificate { get; set; }
         public virtual ICollection<ElectionCandidate> ElectionCandidates { get; set; }
         public virtual ICollection<ElectionResult> ElectionResults { get; set; }
         public virtual PasswordResetToken PasswordResetToken { get; set; }
