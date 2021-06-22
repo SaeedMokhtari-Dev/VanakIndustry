@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using VanakIndustry.Core.Constants;
 using VanakIndustry.DataAccess.Entities;
+using VanakIndustry.Web.Controllers.Auth.Register;
 
 namespace VanakIndustry.Web.Mapping
 {
@@ -13,8 +15,13 @@ namespace VanakIndustry.Web.Mapping
 
             CreateMap<UserAddRequest, ApiMessages.User>()
                 .ForMember(w => w.Password, opt => opt.Ignore());*/
-            
-            //CreateMap<User, UserDetailResponse>();
+
+            CreateMap<RegisterRequest, User>()
+                .ForMember(w => w.Password, opt => opt.Ignore())
+                .ForMember(w => w.BirthDate, opt => 
+                    opt.MapFrom(e => !string.IsNullOrEmpty(e.BirthDate) ? e.BirthDate.Replace("/", "") : string.Empty))
+                .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now))
+                .ForMember(w => w.ModifiedAt, opt => opt.MapFrom(e => DateTime.Now));
         }
     }
 }

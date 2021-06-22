@@ -359,7 +359,7 @@ namespace VanakIndustry.DataAccess.Contexts
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.PhoneNumber)
                     .IsRequired()

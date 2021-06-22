@@ -7,7 +7,7 @@ namespace VanakIndustry.Web.Controllers.Auth.Login
     {
         public LoginValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().EmailAddress().WithMessage(ApiMessages.Auth.UsernameRequired);
+            RuleFor(x => x.Username).NotEmpty().WithMessage(ApiMessages.Auth.UsernameRequired);
             RuleFor(x => x.Password).NotEmpty().WithMessage(ApiMessages.Auth.PasswordRequired);
         }
     }

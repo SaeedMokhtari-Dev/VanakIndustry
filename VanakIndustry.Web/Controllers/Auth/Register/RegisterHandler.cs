@@ -57,7 +57,7 @@ namespace VanakIndustry.Web.Controllers.Auth.Register
         }
         private async Task<User> RegisterUser(RegisterRequest request)
         {
-            User company = await _context.ExecuteTransactionAsync(async () =>
+            User user = await _context.ExecuteTransactionAsync(async () =>
             {
                 User newUser = _mapper.Map<User>(request);
 
@@ -117,7 +117,7 @@ namespace VanakIndustry.Web.Controllers.Auth.Register
 
                 return newUser;
             });
-            return company;
+            return user;
         }
     }
 }
