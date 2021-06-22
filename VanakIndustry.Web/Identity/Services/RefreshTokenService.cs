@@ -46,6 +46,7 @@ namespace VanakIndustry.Web.Identity.Services
         {
             try
             {
+                
                 _context.Entry(token).State = EntityState.Added;
 
                 await _context.SaveChangesAsync();

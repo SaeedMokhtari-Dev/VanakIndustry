@@ -225,9 +225,6 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.HasIndex(e => e.Token, "IX_RefreshToken_Token")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.UserId, e.IsActive }, "IX_RefreshToken_UserActive")
-                    .IsUnique();
-
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.ExpiresAt).HasColumnType("datetime");

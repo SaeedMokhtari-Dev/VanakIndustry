@@ -8,6 +8,7 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiAuthResetPassword = "/api/auth/reset-password";
         public const string ApiAuthValidateResetPasswordToken = "/api/auth/validate-reset-password-token";
         public const string ApiAuthChangePassword = "/api/auth/change-password";
+        public const string ApiAuthChangeUserPassword = "/api/auth/change-user-password";
         public const string ApiAuthLogout = "/api/auth/logout";
         public const string ApiAuthCheck = "/api/auth/check";
         public const string ApiAuthRefreshAccessToken = "/api/auth/refresh-access-token";
