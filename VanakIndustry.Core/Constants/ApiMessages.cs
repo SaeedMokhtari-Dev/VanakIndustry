@@ -48,6 +48,7 @@ namespace VanakIndustry.Core.Constants
             public const string AddedSuccessfully = "Api.Company.Add.Successful";
             public const string EditedSuccessfully = "Api.Company.Edit.Successful";
             public const string ArchivedSuccessfully = "Api.Company.Archived.Successful";
+            public const string ActivatedSuccessfully = "Api.Company.Activated.Successful";
             public const string DeletedSuccessfully = "Api.Company.Deleted.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Company.ArchivedEntityEdit.NotAllowed";

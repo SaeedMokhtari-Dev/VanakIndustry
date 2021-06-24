@@ -26,6 +26,9 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiUserAdd = "/api/user/add";
         public const string ApiUserEdit = "/api/user/edit";
         public const string ApiUserDetail = "/api/user/detail";
+        public const string ApiUserDelete = "/api/user/delete";
+        public const string ApiUserList = "/api/user/list";
+        public const string ApiUserActive = "/api/user/active";
         
 
         public const string ApiLog = "/api/log";

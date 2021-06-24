@@ -20,7 +20,7 @@ namespace VanakIndustry.Web.Controllers.Auth.ChangeUserPassword
         public ChangeUserPasswordHandler(
             VanakIndustryContext context, UserContext userContext, PasswordService passwordService)
         {
-            this._context = context;
+            _context = context;
             _userContext = userContext;
             _passwordService = passwordService;
         }
