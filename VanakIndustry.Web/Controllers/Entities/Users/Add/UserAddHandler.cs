@@ -5,6 +5,7 @@ using AutoMapper;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
+using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
 using VanakIndustry.Web.Identity.Services;
@@ -33,6 +34,12 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Add
             {
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
+            var isNationalIdDuplicate =
+                _context.Users.Any(w => w.NationalId.Trim().ToUpper() == request.NationalId.Trim().ToUpper());
+            if (isNationalIdDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateNationalId);
+            }
 
             if (!string.IsNullOrEmpty(request.Email))
             {
@@ -41,6 +48,15 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Add
                 if (isEmailDuplicate)
                 {
                     return ActionResult.Error(ApiMessages.DuplicateEmail);
+                }
+            }
+            if (!string.IsNullOrEmpty(request.Barcode))
+            {
+                var isBarcodeDuplicate =
+                    _context.Users.Any(w => w.Barcode.Trim().ToUpper() == request.Barcode.Trim().ToUpper());
+                if (isBarcodeDuplicate)
+                {
+                    return ActionResult.Error(ApiMessages.DuplicateBarcode);
                 }
             }
             User user = await AddUser(request);
@@ -104,6 +120,12 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Add
                 }
 
                 newUser.Password = _passwordService.GetPasswordHash(request.Password);
+                
+                
+                newUser.Roles.Add(new UserRole()
+                {
+                    Role = RoleType.User
+                });
                 
                 newUser = (await _context.Users.AddAsync(newUser)).Entity;
                 await _context.SaveChangesAsync();

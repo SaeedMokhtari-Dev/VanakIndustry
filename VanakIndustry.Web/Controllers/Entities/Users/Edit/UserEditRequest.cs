@@ -6,6 +6,7 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalId { get; set; }
+        public string Barcode { get; set; }
         public string Username { get; set; }
         public bool PasswordChanged { get; set; }
         public string Password { get; set; }

@@ -30,7 +30,7 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Active
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            _context.Users.Remove(user);
+            user.IsActive = true;
             await _context.SaveChangesAsync();
             
             return ActionResult.Ok(ApiMessages.UserMessage.ActivatedSuccessfully);

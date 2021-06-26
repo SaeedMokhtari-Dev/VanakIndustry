@@ -10,7 +10,7 @@ namespace VanakIndustry.Web.Extensions
             PersianCalendar persianCalendar = new PersianCalendar();
             return
                 $"{persianCalendar.GetYear(dateTime)}/{persianCalendar.GetMonth(dateTime)}/{persianCalendar.GetDayOfMonth(dateTime)}" +
-                $"-{persianCalendar.GetHour(dateTime)}:{persianCalendar.GetMinute(dateTime)}:{persianCalendar.GetSecond(dateTime)}";
+                $" {persianCalendar.GetHour(dateTime)}:{persianCalendar.GetMinute(dateTime)}:{persianCalendar.GetSecond(dateTime)}";
         }
     }
 }

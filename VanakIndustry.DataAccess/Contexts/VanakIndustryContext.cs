@@ -237,7 +237,7 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.RefreshTokens)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_RefreshToken_User");
             });
 
@@ -281,7 +281,7 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.HasOne(d => d.Attachment)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.AttachmentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Ticket_Image");
 
                 entity.HasOne(d => d.User)
@@ -295,7 +295,7 @@ namespace VanakIndustry.DataAccess.Contexts
             {
                 entity.ToTable("User");
 
-                entity.HasIndex(e => e.Barcode, "IX_User")
+                entity.HasIndex(e => e.Barcode, "IX_User_Barcode_notnull")
                     .IsUnique();
 
                 entity.HasIndex(e => e.NationalId, "IX_User_NationalId")
@@ -306,7 +306,7 @@ namespace VanakIndustry.DataAccess.Contexts
 
                 entity.Property(e => e.Address)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(1024);
 
                 entity.Property(e => e.Barcode).HasMaxLength(50);
 
@@ -373,29 +373,33 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.HasOne(d => d.CandidatePicture)
                     .WithMany(p => p.UserCandidatePictures)
                     .HasForeignKey(d => d.CandidatePictureId)
-                    .HasConstraintName("FK_User_Attachment_CandidatePicture");
+                    .HasConstraintName("FK_User_Attachment_CandidatePicture")
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.UserCards)
-                    .HasForeignKey(d => d.CardId);
+                    .HasForeignKey(d => d.CardId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.FirstPageCertificate)
                     .WithMany(p => p.UserFirstPageCertificates)
                     .HasForeignKey(d => d.FirstPageCertificateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.NationalCard)
                     .WithMany(p => p.UserNationalCards)
                     .HasForeignKey(d => d.NationalCardId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.Picture)
                     .WithMany(p => p.UserPictures)
-                    .HasForeignKey(d => d.PictureId);
+                    .HasForeignKey(d => d.PictureId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.SecondPageCertificate)
                     .WithMany(p => p.UserSecondPageCertificates)
-                    .HasForeignKey(d => d.SecondPageCertificateId);
+                    .HasForeignKey(d => d.SecondPageCertificateId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<UserRole>(entity =>
@@ -405,12 +409,12 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.HasIndex(e => new { e.Role, e.UserId }, "IX_UserRole_Unique")
                     .IsUnique();
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Roles)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_UserRole_User");
             });
 

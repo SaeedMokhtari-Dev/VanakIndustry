@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
@@ -24,8 +25,14 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Detail
 
         protected override async Task<ActionResult> Execute(UserDetailRequest request)
         {
-            User user = await _context.Users
-                .FindAsync(request.UserId);
+            User user = await _context.Users.Include(w => w.Picture)
+                .Include(w => w.Card)
+                .Include(w => w.Roles)
+                .Include(w => w.CandidatePicture)
+                .Include(w => w.NationalCard)
+                .Include(w => w.FirstPageCertificate)
+                .Include(w => w.SecondPageCertificate)
+                .FirstOrDefaultAsync(w => w.Id == request.UserId);
 
             if (user == null)
             {

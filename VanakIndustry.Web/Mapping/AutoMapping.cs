@@ -62,6 +62,11 @@ namespace VanakIndustry.Web.Mapping
                         e.SecondPageCertificateId.HasValue
                             ? String.Join("", e.SecondPageCertificate.Image.Select(Convert.ToChar))
                             : String.Empty))
+                .ForMember(w => w.CandidatePictureImage, opt =>
+                    opt.MapFrom(e =>
+                        e.CandidatePictureId.HasValue
+                            ? String.Join("", e.CandidatePicture.Image.Select(Convert.ToChar))
+                            : String.Empty))
                 .ForMember(w => w.PictureImage, opt =>
                     opt.MapFrom(e =>
                         e.PictureId.HasValue ? String.Join("", e.Picture.Image.Select(Convert.ToChar)) : String.Empty))

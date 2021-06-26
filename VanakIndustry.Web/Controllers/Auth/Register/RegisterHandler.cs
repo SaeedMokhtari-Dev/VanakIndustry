@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
+using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
 using VanakIndustry.Web.Identity.Services;
@@ -111,6 +112,11 @@ namespace VanakIndustry.Web.Controllers.Auth.Register
                 }
 
                 newUser.Password = _passwordService.GetPasswordHash(request.Password);
+                
+                newUser.Roles.Add(new UserRole()
+                {
+                    Role = RoleType.User
+                });
                 
                 newUser = (await _context.Users.AddAsync(newUser)).Entity;
                 await _context.SaveChangesAsync();

@@ -33,7 +33,7 @@ namespace VanakIndustry.DataAccess.Entities
         public long? CardId { get; set; }
         public long? PictureId { get; set; }
         public bool IsActive { get; set; }
-        public long RoleId { get; set; }
+        
         public bool Present { get; set; }
         public string MotherName { get; set; }
         public string CertificateId { get; set; }

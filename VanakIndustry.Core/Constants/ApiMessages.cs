@@ -9,6 +9,8 @@ namespace VanakIndustry.Core.Constants
         public const string PageSize = "Api.PageSize";
         public const string PageIndex = "Api.PageIndex";
         public const string DuplicateUserName = "Api.Username.Duplicate";
+        public const string DuplicateNationalId = "Api.NationalId.Duplicate";
+        public const string DuplicateBarcode = "Api.Barcode.Duplicate";
         public const string DuplicateEmail = "Api.Email.Duplicate";
         public const string NotEnoughBalance = "Api.NotEnoughBalance";
         public const string MinPasswordLengthError = "Api.MinPasswordLengthError";
@@ -44,14 +46,14 @@ namespace VanakIndustry.Core.Constants
             public const string PhoneRequired = "Api.User.Phone.Required";    
             public const string MinPasswordLengthError = "Api.User.Password.MinPasswordLengthError";
             
-            public const string RegisteredSuccessfully = "Api.Company.Register.Successful";
-            public const string AddedSuccessfully = "Api.Company.Add.Successful";
-            public const string EditedSuccessfully = "Api.Company.Edit.Successful";
-            public const string ArchivedSuccessfully = "Api.Company.Archived.Successful";
-            public const string ActivatedSuccessfully = "Api.Company.Activated.Successful";
-            public const string DeletedSuccessfully = "Api.Company.Deleted.Successful";
+            public const string RegisteredSuccessfully = "Api.User.Register.Successful";
+            public const string AddedSuccessfully = "Api.User.Add.Successful";
+            public const string EditedSuccessfully = "Api.User.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.User.Archived.Successful";
+            public const string ActivatedSuccessfully = "Api.User.Activated.Successful";
+            public const string DeletedSuccessfully = "Api.User.Deleted.Successful";
             
-            public const string ArchiveEntityEditNotAllowed = "Api.Company.ArchivedEntityEdit.NotAllowed";
+            public const string ArchiveEntityEditNotAllowed = "Api.User.ArchivedEntityEdit.NotAllowed";
         }
     }
 }

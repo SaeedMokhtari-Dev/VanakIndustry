@@ -2,7 +2,7 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Detail
 {
     public class UserDetailResponse
     {
-        public string Key { get; set; }
+        public long Key { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalId { get; set; }
@@ -34,7 +34,6 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Detail
         public string ModifiedAt { get; set; }
         public string LastLoginAt { get; set; }
         public bool IsActive { get; set; }
-        public long RoleId { get; set; }
         public bool Present { get; set; }
     }
 }

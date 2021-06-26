@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
+using Microsoft.EntityFrameworkCore;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
@@ -27,8 +29,14 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
 
         protected override async Task<ActionResult> Execute(UserEditRequest request)
         {
-            User editUser = await _context.Users
-                .FindAsync(request.UserId);
+            User editUser = await _context.Users.Include(w => w.Picture)
+                .Include(w => w.Card)
+                .Include(w => w.Roles)
+                .Include(w => w.CandidatePicture)
+                .Include(w => w.NationalCard)
+                .Include(w => w.FirstPageCertificate)
+                .Include(w => w.SecondPageCertificate)
+                .FirstOrDefaultAsync(w => w.Id == request.UserId);
 
             if (editUser == null)
             {
@@ -42,6 +50,13 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
             {
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
+            var isNationalIdDuplicate =
+                _context.Users.Any(w => w.NationalId.Trim().ToUpper() == request.NationalId.Trim().ToUpper()
+                                        && w.Id != request.UserId);
+            if (isNationalIdDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateNationalId);
+            }
 
             if (!string.IsNullOrEmpty(request.Email))
             {
@@ -51,6 +66,17 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
                 if (isEmailDuplicate)
                 {
                     return ActionResult.Error(ApiMessages.DuplicateEmail);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.Barcode))
+            {
+                var isBarcodeDuplicate =
+                    _context.Users.Any(w => w.Barcode.Trim().ToUpper() == request.Barcode.Trim().ToUpper()
+                                            && w.Id != request.UserId);
+                if (isBarcodeDuplicate)
+                {
+                    return ActionResult.Error(ApiMessages.DuplicateBarcode);
                 }
             }
 
@@ -67,62 +93,48 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
 
                 if (request.CardImageChanged && !string.IsNullOrEmpty(request.CardImage))
                 {
-                    editUser.Card = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.CardImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.Card.CreatedAt = DateTime.Now;
+                    editUser.Card.Image = request.CardImage.ToCharArray().Select(Convert.ToByte).ToArray();
                 }
 
                 if (request.PictureImageChanged && !string.IsNullOrEmpty(request.PictureImage))
                 {
-                    editUser.Picture = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.PictureImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.Picture.CreatedAt = DateTime.Now;
+                    editUser.Picture.Image = request.PictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
                 }
 
                 if (request.CandidatePictureImageChanged && !string.IsNullOrEmpty(request.CandidatePictureImage))
                 {
-                    editUser.CandidatePicture = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.CandidatePictureImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.CandidatePicture.CreatedAt = DateTime.Now;
+                    editUser.CandidatePicture.Image =
+                        request.CandidatePictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
                 }
 
                 if (request.NationalCardImageChanged && !string.IsNullOrEmpty(request.NationalCardImage))
                 {
-                    editUser.NationalCard = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.NationalCardImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.NationalCard.CreatedAt = DateTime.Now;
+                    editUser.NationalCard.Image =
+                        request.NationalCardImage.ToCharArray().Select(Convert.ToByte).ToArray();
                 }
 
                 if (request.FirstPageCertificateImageChanged && !string.IsNullOrEmpty(request.FirstPageCertificateImage))
                 {
-                    editUser.FirstPageCertificate = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.FirstPageCertificateImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.FirstPageCertificate.CreatedAt = DateTime.Now;
+                    editUser.FirstPageCertificate.Image = request.FirstPageCertificateImage.ToCharArray()
+                        .Select(Convert.ToByte).ToArray();
                 }
 
                 if (request.SecondPageCertificateImageChanged && request.Married && !string.IsNullOrEmpty(request.SecondPageCertificateImage))
                 {
-                    editUser.SecondPageCertificate = new Attachment()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Image = request.SecondPageCertificateImage.ToCharArray().Select(Convert.ToByte).ToArray()
-                    };
+                    editUser.SecondPageCertificate.Image = request.SecondPageCertificateImage.ToCharArray()
+                        .Select(Convert.ToByte).ToArray();
+                    editUser.SecondPageCertificate.CreatedAt = DateTime.Now;
                 }
 
                 if(request.PasswordChanged)
                     editUser.Password = _passwordService.GetPasswordHash(request.Password);
 
-                editUser = (await _context.Users.AddAsync(editUser)).Entity;
+                //editUser = (await _context.Users.AddAsync(editUser)).Entity;
                 await _context.SaveChangesAsync();
 
                 return editUser;
