@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
+using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
+using VanakIndustry.Web.Identity.Contexts;
 
 namespace VanakIndustry.Web.Controllers.Entities.Users.Detail
 {
@@ -15,16 +17,22 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Detail
     {
         private readonly VanakIndustryContext _context;
         private readonly IMapper _mapper;
+        private readonly UserContext _userContext;
 
         public UserDetailHandler(
-            VanakIndustryContext context, IMapper mapper)
+            VanakIndustryContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(UserDetailRequest request)
         {
+            if (_userContext.Roles.Any(w => w.Role == RoleType.User) && request.UserId != _userContext.Id)
+            {
+                return ActionResult.Error(ApiMessages.Forbidden);
+            }
             User user = await _context.Users.Include(w => w.Picture)
                 .Include(w => w.Card)
                 .Include(w => w.Roles)

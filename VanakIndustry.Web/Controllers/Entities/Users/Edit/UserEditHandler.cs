@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using VanakIndustry.Core.Api.Handlers;
 using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
+using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
+using VanakIndustry.Web.Identity.Contexts;
 using VanakIndustry.Web.Identity.Services;
 
 namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
@@ -18,17 +20,23 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
         private readonly VanakIndustryContext _context;
         private readonly IMapper _mapper;
         private readonly PasswordService _passwordService;
+        private readonly UserContext _userContext;
 
         public UserEditHandler(
-            VanakIndustryContext context, IMapper mapper, PasswordService passwordService)
+            VanakIndustryContext context, IMapper mapper, PasswordService passwordService, UserContext userContext)
         {
             _context = context;
             _mapper = mapper;
             _passwordService = passwordService;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(UserEditRequest request)
         {
+            if (_userContext.Roles.Any(w => w.Role == RoleType.User) && request.UserId != _userContext.Id)
+            {
+                return ActionResult.Error(ApiMessages.Forbidden);
+            }
             User editUser = await _context.Users.Include(w => w.Picture)
                 .Include(w => w.Card)
                 .Include(w => w.Roles)
@@ -93,21 +101,54 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
 
                 if (request.CardImageChanged && !string.IsNullOrEmpty(request.CardImage))
                 {
-                    editUser.Card.CreatedAt = DateTime.Now;
-                    editUser.Card.Image = request.CardImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    if (editUser.CardId.HasValue)
+                    {
+                        editUser.Card.CreatedAt = DateTime.Now;
+                        editUser.Card.Image = request.CardImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    }
+                    else
+                    {
+                        editUser.Card = new Attachment
+                        {
+                            CreatedAt = DateTime.Now,
+                            Image = request.CardImage.ToCharArray().Select(Convert.ToByte).ToArray()
+                        };
+                    }
                 }
 
                 if (request.PictureImageChanged && !string.IsNullOrEmpty(request.PictureImage))
                 {
-                    editUser.Picture.CreatedAt = DateTime.Now;
-                    editUser.Picture.Image = request.PictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    if (editUser.PictureId.HasValue)
+                    {
+                        editUser.Picture.CreatedAt = DateTime.Now;
+                        editUser.Picture.Image = request.PictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    }
+                    else
+                    {
+                        editUser.Picture = new Attachment
+                        {
+                            CreatedAt = DateTime.Now,
+                            Image = request.PictureImage.ToCharArray().Select(Convert.ToByte).ToArray()
+                        };
+                    }
                 }
 
                 if (request.CandidatePictureImageChanged && !string.IsNullOrEmpty(request.CandidatePictureImage))
                 {
-                    editUser.CandidatePicture.CreatedAt = DateTime.Now;
-                    editUser.CandidatePicture.Image =
-                        request.CandidatePictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    if (editUser.CandidatePictureId.HasValue)
+                    {
+                        editUser.CandidatePicture.CreatedAt = DateTime.Now;
+                        editUser.CandidatePicture.Image =
+                            request.CandidatePictureImage.ToCharArray().Select(Convert.ToByte).ToArray();
+                    }
+                    else
+                    {
+                        editUser.CandidatePicture = new Attachment
+                        {
+                            CreatedAt = DateTime.Now,
+                            Image = request.CandidatePictureImage.ToCharArray().Select(Convert.ToByte).ToArray()
+                        };
+                    }
                 }
 
                 if (request.NationalCardImageChanged && !string.IsNullOrEmpty(request.NationalCardImage))
@@ -126,9 +167,21 @@ namespace VanakIndustry.Web.Controllers.Entities.Users.Edit
 
                 if (request.SecondPageCertificateImageChanged && request.Married && !string.IsNullOrEmpty(request.SecondPageCertificateImage))
                 {
-                    editUser.SecondPageCertificate.Image = request.SecondPageCertificateImage.ToCharArray()
-                        .Select(Convert.ToByte).ToArray();
-                    editUser.SecondPageCertificate.CreatedAt = DateTime.Now;
+                    if (editUser.SecondPageCertificateId.HasValue)
+                    {
+                        editUser.SecondPageCertificate.Image = request.SecondPageCertificateImage.ToCharArray()
+                            .Select(Convert.ToByte).ToArray();
+                        editUser.SecondPageCertificate.CreatedAt = DateTime.Now;
+                    }
+                    else
+                    {
+                        editUser.SecondPageCertificate = new Attachment
+                        {
+                            Image = request.SecondPageCertificateImage.ToCharArray()
+                                .Select(Convert.ToByte).ToArray(),
+                            CreatedAt = DateTime.Now
+                        };
+                    }
                 }
 
                 if(request.PasswordChanged)
