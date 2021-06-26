@@ -55,5 +55,13 @@ namespace VanakIndustry.Core.Constants
             
             public const string ArchiveEntityEditNotAllowed = "Api.User.ArchivedEntityEdit.NotAllowed";
         }
+        public static class ElectionCandidateTypeMessage
+        {
+            public const string TitleRequired = "Api.ElectionCandidateType.Title.Required";    
+            
+            public const string AddedSuccessfully = "Api.ElectionCandidateType.Add.Successful";
+            public const string EditedSuccessfully = "Api.ElectionCandidateType.Edit.Successful";
+            public const string DeletedSuccessfully = "Api.ElectionCandidateType.Deleted.Successful";
+        }
     }
 }

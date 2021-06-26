@@ -5,6 +5,10 @@ using AutoMapper;
 using VanakIndustry.Core.Constants;
 using VanakIndustry.DataAccess.Entities;
 using VanakIndustry.Web.Controllers.Auth.Register;
+using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Add;
+using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Detail;
+using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Edit;
+using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Get;
 using VanakIndustry.Web.Controllers.Entities.Users.Add;
 using VanakIndustry.Web.Controllers.Entities.Users.Detail;
 using VanakIndustry.Web.Controllers.Entities.Users.Edit;
@@ -87,6 +91,23 @@ namespace VanakIndustry.Web.Mapping
                 .ForMember(w => w.LastLoginAt,
                     opt => opt.MapFrom(e =>
                         e.LastLoginAt.HasValue ? e.LastLoginAt.Value.ToPersianDateTime() : String.Empty));
+
+
+            #endregion
+             #region ElectionCandidateType
+
+            CreateMap<RegisterRequest, ElectionCandidateType>();
+            
+            CreateMap<ElectionCandidateTypeAddRequest, ElectionCandidateType>();
+            
+            CreateMap<ElectionCandidateTypeEditRequest, ElectionCandidateType>()
+                .ForMember(w => w.Id, opt => opt.Ignore());
+
+            CreateMap<ElectionCandidateType, ElectionCandidateTypeDetailResponse>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id));
+
+            CreateMap<ElectionCandidateType, ElectionCandidateTypeGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id));
 
 
             #endregion

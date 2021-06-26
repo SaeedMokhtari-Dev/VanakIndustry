@@ -14,14 +14,10 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiAuthRefreshAccessToken = "/api/auth/refresh-access-token";
         public const string ApiUserInfo = "/api/user/info";
         
-        /*AuditingCompany APIs*/
-        public const string ApiAuditingCompanyAdd = "/api/auditing-company/add";
-        public const string ApiAuditingCompanyEdit = "/api/auditing-company/edit";
-        public const string ApiAuditingCompanyArchive = "/api/auditing-company/archive";
-        public const string ApiAuditingCompanyGet = "/api/auditing-company/get";
-        public const string ApiAuditingCompanyDetail = "/api/auditing-company/detail";
-        
         /*admin APIs*/
+
+        #region  Users
+
         public const string ApiUserGet = "/api/user/get";
         public const string ApiUserAdd = "/api/user/add";
         public const string ApiUserEdit = "/api/user/edit";
@@ -29,6 +25,20 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiUserDelete = "/api/user/delete";
         public const string ApiUserList = "/api/user/list";
         public const string ApiUserActive = "/api/user/active";
+
+        #endregion
+        
+        #region  ElectionCandidateTypes
+
+        public const string ApiElectionCandidateTypeGet = "/api/election-candidate-type/get";
+        public const string ApiElectionCandidateTypeAdd = "/api/election-candidate-type/add";
+        public const string ApiElectionCandidateTypeEdit = "/api/election-candidate-type/edit";
+        public const string ApiElectionCandidateTypeDetail = "/api/election-candidate-type/detail";
+        public const string ApiElectionCandidateTypeDelete = "/api/election-candidate-type/delete";
+        public const string ApiElectionCandidateTypeList = "/api/election-candidate-type/list";
+
+        #endregion
+        
         
 
         public const string ApiLog = "/api/log";
