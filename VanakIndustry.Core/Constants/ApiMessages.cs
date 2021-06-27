@@ -63,5 +63,15 @@ namespace VanakIndustry.Core.Constants
             public const string EditedSuccessfully = "Api.ElectionCandidateType.Edit.Successful";
             public const string DeletedSuccessfully = "Api.ElectionCandidateType.Deleted.Successful";
         }
+        public static class ElectionMessage
+        {
+            public const string TitleRequired = "Api.Election.Title.Required";    
+            public const string ElectionCandidateTypeIdRequired = "Api.Election.ElectionCandidateTypeId.Required";    
+            
+            public const string AddedSuccessfully = "Api.Election.Add.Successful";
+            public const string EditedSuccessfully = "Api.Election.Edit.Successful";
+            public const string DeletedSuccessfully = "Api.Election.Deleted.Successful";
+            public const string CandidateAddedSuccessfully = "Api.Election.CandidateAdded.Successful";
+        }
     }
 }

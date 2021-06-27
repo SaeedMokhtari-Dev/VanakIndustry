@@ -9,6 +9,10 @@ using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Add;
 using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Detail;
 using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Edit;
 using VanakIndustry.Web.Controllers.Entities.ElectionCandidateTypes.Get;
+using VanakIndustry.Web.Controllers.Entities.Elections.Add;
+using VanakIndustry.Web.Controllers.Entities.Elections.Detail;
+using VanakIndustry.Web.Controllers.Entities.Elections.Edit;
+using VanakIndustry.Web.Controllers.Entities.Elections.Get;
 using VanakIndustry.Web.Controllers.Entities.Users.Add;
 using VanakIndustry.Web.Controllers.Entities.Users.Detail;
 using VanakIndustry.Web.Controllers.Entities.Users.Edit;
@@ -17,7 +21,7 @@ using VanakIndustry.Web.Extensions;
 
 namespace VanakIndustry.Web.Mapping
 {
-    public class AutoMapping: Profile
+    public class AutoMapping : Profile
     {
         public AutoMapping()
         {
@@ -25,23 +29,23 @@ namespace VanakIndustry.Web.Mapping
 
             CreateMap<RegisterRequest, User>()
                 .ForMember(w => w.Password, opt => opt.Ignore())
-                .ForMember(w => w.BirthDate, opt => 
+                .ForMember(w => w.BirthDate, opt =>
                     opt.MapFrom(e => !string.IsNullOrEmpty(e.BirthDate) ? e.BirthDate.Replace("/", "") : string.Empty))
                 .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now))
                 .ForMember(w => w.ModifiedAt, opt => opt.MapFrom(e => DateTime.Now));
-            
+
             CreateMap<UserAddRequest, User>()
                 .ForMember(w => w.Password, opt => opt.Ignore())
-                .ForMember(w => w.BirthDate, opt => 
+                .ForMember(w => w.BirthDate, opt =>
                     opt.MapFrom(e => !string.IsNullOrEmpty(e.BirthDate) ? e.BirthDate.Replace("/", "") : string.Empty))
                 .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now))
                 .ForMember(w => w.ModifiedAt, opt => opt.MapFrom(e => DateTime.Now))
                 .ForMember(w => w.IsActive, opt => opt.MapFrom(e => true));
-            
+
             CreateMap<UserEditRequest, User>()
                 .ForMember(w => w.Id, opt => opt.Ignore())
                 .ForMember(w => w.Password, opt => opt.Ignore())
-                .ForMember(w => w.BirthDate, opt => 
+                .ForMember(w => w.BirthDate, opt =>
                     opt.MapFrom(e => !string.IsNullOrEmpty(e.BirthDate) ? e.BirthDate.Replace("/", "") : string.Empty))
                 .ForMember(w => w.ModifiedAt, opt => opt.MapFrom(e => DateTime.Now));
 
@@ -92,14 +96,12 @@ namespace VanakIndustry.Web.Mapping
                     opt => opt.MapFrom(e =>
                         e.LastLoginAt.HasValue ? e.LastLoginAt.Value.ToPersianDateTime() : String.Empty));
 
-
             #endregion
-             #region ElectionCandidateType
 
-            CreateMap<RegisterRequest, ElectionCandidateType>();
-            
+            #region ElectionCandidateType
+
             CreateMap<ElectionCandidateTypeAddRequest, ElectionCandidateType>();
-            
+
             CreateMap<ElectionCandidateTypeEditRequest, ElectionCandidateType>()
                 .ForMember(w => w.Id, opt => opt.Ignore());
 
@@ -109,9 +111,53 @@ namespace VanakIndustry.Web.Mapping
             CreateMap<ElectionCandidateType, ElectionCandidateTypeGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id));
 
-
             #endregion
 
+            #region Election
+
+            CreateMap<ElectionAddRequest, Election>();
+
+            CreateMap<ElectionEditRequest, Election>()
+                .ForMember(w => w.Id, opt => opt.Ignore())
+                .ForMember(w => w.ElectionLimits, opt => opt.Ignore())
+                .ForMember(w => w.ElectionCandidates, opt => opt.Ignore())
+                .ForMember(w => w.ElectionResults, opt => opt.Ignore());
+
+            CreateMap<Election, ElectionDetailResponse>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id))
+                .ForMember(w => w.ElectionLimitItems, opt =>
+                    opt.MapFrom(e => e.ElectionLimits.Select(w =>
+                        new ElectionLimitItem()
+                        {
+                            Id = w.Id,
+                            LimitCount = w.LimitCount,
+                            ElectionCandidateTypeId = w.ElectionCandidateTypeId,
+                            ElectionCandidateTypeTitle = w.ElectionCandidateType.Title
+                        })))
+                .ForMember(w => w.ElectionCandidateItems, opt =>
+                    opt.MapFrom(e => e.ElectionCandidates.Select(w =>
+                        new ElectionCandidateItem()
+                        {
+                            Id = w.Id,
+                            ElectionCandidateTypeId = w.ElectionCandidateTypeId,
+                            ElectionCandidateTypeTitle = w.ElectionCandidateType.Title,
+                            UserId = w.UserId,
+                            UserFullName = $"{w.User.FirstName} {w.User.LastName}"
+                        })));
+
+            CreateMap<Election, ElectionGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id))
+                .ForMember(w => w.ElectionLimitItems, opt =>
+                    opt.MapFrom(e => e.ElectionLimits.Select(w =>
+                        new ElectionLimitItem()
+                        {
+                            Id = w.Id,
+                            LimitCount = w.LimitCount,
+                            ElectionCandidateTypeId = w.ElectionCandidateTypeId,
+                            ElectionCandidateTypeTitle = w.ElectionCandidateType.Title
+                        })));
+
+            #endregion
         }
     }
 }

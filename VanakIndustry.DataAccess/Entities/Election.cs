@@ -21,6 +21,7 @@ namespace VanakIndustry.DataAccess.Entities
         public bool Iplimit { get; set; }
         public string Iplist { get; set; }
         public bool Finalize { get; set; }
+        public bool Deleted { get; set; }
         public DateTime? FinalizeDate { get; set; }
 
         public virtual ICollection<ElectionCandidate> ElectionCandidates { get; set; }
