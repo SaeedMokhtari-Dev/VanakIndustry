@@ -72,6 +72,8 @@ namespace VanakIndustry.Core.Constants
             public const string EditedSuccessfully = "Api.Election.Edit.Successful";
             public const string DeletedSuccessfully = "Api.Election.Deleted.Successful";
             public const string CandidateAddedSuccessfully = "Api.Election.CandidateAdded.Successful";
+            
+            public const string EndDateShouldGreaterThanStartDate = "Api.Election.EndDateShouldGreaterThanStartDate";
         }
     }
 }

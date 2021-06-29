@@ -9,33 +9,30 @@ using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.Web.Identity.Contexts;
 
-namespace VanakIndustry.Web.Controllers.Entities.Users.List
+namespace VanakIndustry.Web.Controllers.Entities.Elections.List
 {
-    public class UserListHandler : ApiRequestHandler<UserListRequest>
+    public class ElectionListHandler : ApiRequestHandler<ElectionListRequest>
     {
         private readonly VanakIndustryContext _context;
         private readonly IMapper _mapper;
-        private readonly UserContext _userContext;
-
-        public UserListHandler(
-            VanakIndustryContext context, IMapper mapper, UserContext userContext)
+        
+        public ElectionListHandler(
+            VanakIndustryContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _userContext = userContext;
         }
 
-        protected override async Task<ActionResult> Execute(UserListRequest request)
+        protected override async Task<ActionResult> Execute(ElectionListRequest request)
         {
-            var query = _context.Users
+            var query = _context.Elections
                 .OrderByDescending(w => w.Id)
                 .AsQueryable();
 
             var response = await query.Select(w =>
-            new UserListResponseItem() {
+            new ElectionListResponseItem() {
                 Key = w.Id, 
-                FullName = $"{w.FirstName} {w.LastName}",
-                NationalId = w.NationalId
+                Title = w.Title
             }).ToListAsync();
             
             return ActionResult.Ok(response);

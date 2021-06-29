@@ -9,6 +9,7 @@ using VanakIndustry.Core.Api.Models;
 using VanakIndustry.Core.Constants;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
+using VanakIndustry.Web.Extensions;
 using VanakIndustry.Web.Identity.Services;
 
 namespace VanakIndustry.Web.Controllers.Entities.Elections.Edit
@@ -42,6 +43,9 @@ namespace VanakIndustry.Web.Controllers.Entities.Elections.Edit
             
             if(editElection.Deleted || editElection.Finalize)
                 return ActionResult.Error(ApiMessages.Forbidden);
+            
+            if(request.StartDate.ToGregorianDateTime() >= request.EndDate.ToGregorianDateTime())
+                return ActionResult.Error(ApiMessages.ElectionMessage.EndDateShouldGreaterThanStartDate);
 
             await EditElection(editElection, request);
             return ActionResult.Ok(ApiMessages.ElectionMessage.EditedSuccessfully);

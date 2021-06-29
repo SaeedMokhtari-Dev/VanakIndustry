@@ -115,13 +115,24 @@ namespace VanakIndustry.Web.Mapping
 
             #region Election
 
-            CreateMap<ElectionAddRequest, Election>();
-
+            CreateMap<ElectionAddRequest, Election>()
+                .ForMember(w => w.StartDate, opt =>
+                    opt.MapFrom(w =>
+                        !string.IsNullOrEmpty(w.StartDate) ? w.StartDate.ToGregorianDateTime() : DateTime.Now))
+                .ForMember(w => w.EndDate, opt =>
+                    opt.MapFrom(w =>
+                        !string.IsNullOrEmpty(w.EndDate) ? w.EndDate.ToGregorianDateTime() : DateTime.Now));
             CreateMap<ElectionEditRequest, Election>()
                 .ForMember(w => w.Id, opt => opt.Ignore())
                 .ForMember(w => w.ElectionLimits, opt => opt.Ignore())
                 .ForMember(w => w.ElectionCandidates, opt => opt.Ignore())
-                .ForMember(w => w.ElectionResults, opt => opt.Ignore());
+                .ForMember(w => w.ElectionResults, opt => opt.Ignore())
+                .ForMember(w => w.StartDate, opt =>
+                    opt.MapFrom(w =>
+                        !string.IsNullOrEmpty(w.StartDate) ? w.StartDate.ToGregorianDateTime() : DateTime.Now))
+                .ForMember(w => w.EndDate, opt =>
+                    opt.MapFrom(w =>
+                        !string.IsNullOrEmpty(w.EndDate) ? w.EndDate.ToGregorianDateTime() : DateTime.Now));
 
             CreateMap<Election, ElectionDetailResponse>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id))
@@ -131,6 +142,7 @@ namespace VanakIndustry.Web.Mapping
                         {
                             Id = w.Id,
                             LimitCount = w.LimitCount,
+                            ElectionId = w.ElectionId,
                             ElectionCandidateTypeId = w.ElectionCandidateTypeId,
                             ElectionCandidateTypeTitle = w.ElectionCandidateType.Title
                         })))
@@ -141,9 +153,17 @@ namespace VanakIndustry.Web.Mapping
                             Id = w.Id,
                             ElectionCandidateTypeId = w.ElectionCandidateTypeId,
                             ElectionCandidateTypeTitle = w.ElectionCandidateType.Title,
+                            ElectionId = w.ElectionId,
                             UserId = w.UserId,
                             UserFullName = $"{w.User.FirstName} {w.User.LastName}"
-                        })));
+                        })))
+                
+                .ForMember(w => w.StartDate, opt =>
+                    opt.MapFrom(w =>
+                        w.StartDate.ToPersianDateTime()))
+                .ForMember(w => w.EndDate, opt =>
+                    opt.MapFrom(w =>
+                        w.EndDate.ToPersianDateTime()));
 
             CreateMap<Election, ElectionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id))
@@ -153,9 +173,16 @@ namespace VanakIndustry.Web.Mapping
                         {
                             Id = w.Id,
                             LimitCount = w.LimitCount,
+                            ElectionId = w.ElectionId,
                             ElectionCandidateTypeId = w.ElectionCandidateTypeId,
                             ElectionCandidateTypeTitle = w.ElectionCandidateType.Title
-                        })));
+                        })))
+                .ForMember(w => w.StartDate, opt =>
+                    opt.MapFrom(w =>
+                        w.StartDate.ToPersianDateTime()))
+                .ForMember(w => w.EndDate, opt =>
+                    opt.MapFrom(w =>
+                        w.EndDate.ToPersianDateTime()));
 
             #endregion
         }

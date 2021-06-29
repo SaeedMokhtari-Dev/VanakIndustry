@@ -29,6 +29,7 @@ namespace VanakIndustry.Web.Controllers.Entities.Elections.Detail
         {
             Election election = await _context.Elections
                 .Include(w => w.ElectionLimits).ThenInclude(w => w.ElectionCandidateType)
+                .Include(w => w.ElectionCandidates).ThenInclude(w => w.User)
                 .Include(w => w.ElectionCandidates).ThenInclude(w => w.ElectionCandidateType)
                 .FirstOrDefaultAsync(w => w.Id == request.ElectionId);
 

@@ -25,6 +25,7 @@ namespace VanakIndustry.Web.Controllers.Entities.Elections.Get
         {
             var query = _context.Elections
                 .Include(w => w.ElectionLimits).ThenInclude(w => w.ElectionCandidateType)
+                .Where(w => !w.Deleted)
                 .OrderByDescending(w => w.Id)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();

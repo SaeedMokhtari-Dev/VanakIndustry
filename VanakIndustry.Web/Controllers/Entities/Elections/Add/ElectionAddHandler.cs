@@ -9,6 +9,7 @@ using VanakIndustry.Core.Constants;
 using VanakIndustry.Core.Enums;
 using VanakIndustry.DataAccess.Contexts;
 using VanakIndustry.DataAccess.Entities;
+using VanakIndustry.Web.Extensions;
 using VanakIndustry.Web.Identity.Services;
 
 namespace VanakIndustry.Web.Controllers.Entities.Elections.Add
@@ -29,6 +30,9 @@ namespace VanakIndustry.Web.Controllers.Entities.Elections.Add
 
         protected override async Task<ActionResult> Execute(ElectionAddRequest request)
         {
+            if(request.StartDate.ToGregorianDateTime() >= request.EndDate.ToGregorianDateTime())
+                return ActionResult.Error(ApiMessages.ElectionMessage.EndDateShouldGreaterThanStartDate);
+            
             Election election = await AddElection(request);
             
             return ActionResult.Ok(ApiMessages.ElectionMessage.AddedSuccessfully);
