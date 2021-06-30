@@ -10,6 +10,7 @@ namespace VanakIndustry.DataAccess.Entities
         public User()
         {
             ElectionCandidates = new HashSet<ElectionCandidate>();
+            ElectionPresentUsers = new HashSet<ElectionPresentUser>();
             ElectionResults = new HashSet<ElectionResult>();
             RefreshTokens = new HashSet<RefreshToken>();
             SelectElectionCandidates = new HashSet<SelectElectionCandidate>();
@@ -21,6 +22,8 @@ namespace VanakIndustry.DataAccess.Entities
         public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
         public string NationalId { get; set; }
         public string Barcode { get; set; }
         public string Username { get; set; }
@@ -60,6 +63,7 @@ namespace VanakIndustry.DataAccess.Entities
         public virtual Attachment Picture { get; set; }
         public virtual Attachment SecondPageCertificate { get; set; }
         public virtual ICollection<ElectionCandidate> ElectionCandidates { get; set; }
+        public virtual ICollection<ElectionPresentUser> ElectionPresentUsers { get; set; }
         public virtual ICollection<ElectionResult> ElectionResults { get; set; }
         public virtual PasswordResetToken PasswordResetToken { get; set; }
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; }

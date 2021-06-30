@@ -11,6 +11,7 @@ namespace VanakIndustry.DataAccess.Entities
         {
             ElectionCandidates = new HashSet<ElectionCandidate>();
             ElectionLimits = new HashSet<ElectionLimit>();
+            ElectionPresentUsers = new HashSet<ElectionPresentUser>();
             ElectionResults = new HashSet<ElectionResult>();
         }
 
@@ -21,11 +22,12 @@ namespace VanakIndustry.DataAccess.Entities
         public bool Iplimit { get; set; }
         public string Iplist { get; set; }
         public bool Finalize { get; set; }
-        public bool Deleted { get; set; }
         public DateTime? FinalizeDate { get; set; }
+        public bool Deleted { get; set; }
 
         public virtual ICollection<ElectionCandidate> ElectionCandidates { get; set; }
         public virtual ICollection<ElectionLimit> ElectionLimits { get; set; }
+        public virtual ICollection<ElectionPresentUser> ElectionPresentUsers { get; set; }
         public virtual ICollection<ElectionResult> ElectionResults { get; set; }
     }
 }

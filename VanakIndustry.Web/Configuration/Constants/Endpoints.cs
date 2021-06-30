@@ -25,6 +25,7 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiUserDelete = "/api/user/delete";
         public const string ApiUserList = "/api/user/list";
         public const string ApiUserActive = "/api/user/active";
+        public const string ApiUserPresent = "/api/user/present";
 
         #endregion
         

@@ -26,6 +26,7 @@ namespace VanakIndustry.DataAccess.Contexts
         public virtual DbSet<ElectionCandidate> ElectionCandidates { get; set; }
         public virtual DbSet<ElectionCandidateType> ElectionCandidateTypes { get; set; }
         public virtual DbSet<ElectionLimit> ElectionLimits { get; set; }
+        public virtual DbSet<ElectionPresentUser> ElectionPresentUsers { get; set; }
         public virtual DbSet<ElectionResult> ElectionResults { get; set; }
         public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -169,6 +170,28 @@ namespace VanakIndustry.DataAccess.Contexts
                     .HasConstraintName("FK_ElectionLimit_Election");
             });
 
+            modelBuilder.Entity<ElectionPresentUser>(entity =>
+            {
+                entity.ToTable("ElectionPresentUser");
+
+                entity.HasIndex(e => new { e.ElectionId, e.UserId }, "IX_ElectionPresentUser_Unique")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.ExpireDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Election)
+                    .WithMany(p => p.ElectionPresentUsers)
+                    .HasForeignKey(d => d.ElectionId)
+                    .HasConstraintName("FK_ElectionPresentUser_Election");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ElectionPresentUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_ElectionPresentUser_User");
+            });
+
             modelBuilder.Entity<ElectionResult>(entity =>
             {
                 entity.ToTable("ElectionResult");
@@ -296,7 +319,8 @@ namespace VanakIndustry.DataAccess.Contexts
                 entity.ToTable("User");
 
                 entity.HasIndex(e => e.Barcode, "IX_User_Barcode_notnull")
-                    .IsUnique();
+                    .IsUnique()
+                    .HasFilter("([Barcode] IS NOT NULL)");
 
                 entity.HasIndex(e => e.NationalId, "IX_User_NationalId")
                     .IsUnique();
@@ -372,34 +396,29 @@ namespace VanakIndustry.DataAccess.Contexts
 
                 entity.HasOne(d => d.CandidatePicture)
                     .WithMany(p => p.UserCandidatePictures)
-                    .HasForeignKey(d => d.CandidatePictureId)
-                    .HasConstraintName("FK_User_Attachment_CandidatePicture")
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(d => d.CandidatePictureId);
 
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.UserCards)
-                    .HasForeignKey(d => d.CardId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(d => d.CardId);
 
                 entity.HasOne(d => d.FirstPageCertificate)
                     .WithMany(p => p.UserFirstPageCertificates)
                     .HasForeignKey(d => d.FirstPageCertificateId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.NationalCard)
                     .WithMany(p => p.UserNationalCards)
                     .HasForeignKey(d => d.NationalCardId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Picture)
                     .WithMany(p => p.UserPictures)
-                    .HasForeignKey(d => d.PictureId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(d => d.PictureId);
 
                 entity.HasOne(d => d.SecondPageCertificate)
                     .WithMany(p => p.UserSecondPageCertificates)
-                    .HasForeignKey(d => d.SecondPageCertificateId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .HasForeignKey(d => d.SecondPageCertificateId);
             });
 
             modelBuilder.Entity<UserRole>(entity =>

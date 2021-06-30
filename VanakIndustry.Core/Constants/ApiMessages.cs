@@ -43,7 +43,7 @@ namespace VanakIndustry.Core.Constants
             public const string LastNameRequired = "Api.User.LastName.Required";    
             public const string EmailRequired = "Api.User.Email.Required";    
             public const string FaxRequired = "Api.User.Fax.Required";    
-            public const string PhoneRequired = "Api.User.Phone.Required";    
+            public const string BarcodeRequired = "Api.User.Barcode.Required";    
             public const string MinPasswordLengthError = "Api.User.Password.MinPasswordLengthError";
             
             public const string RegisteredSuccessfully = "Api.User.Register.Successful";
@@ -51,9 +51,11 @@ namespace VanakIndustry.Core.Constants
             public const string EditedSuccessfully = "Api.User.Edit.Successful";
             public const string ArchivedSuccessfully = "Api.User.Archived.Successful";
             public const string ActivatedSuccessfully = "Api.User.Activated.Successful";
+            public const string PresentedSuccessfully = "Api.User.Presented.Successful";
             public const string DeletedSuccessfully = "Api.User.Deleted.Successful";
             
-            public const string ArchiveEntityEditNotAllowed = "Api.User.ArchivedEntityEdit.NotAllowed";
+            public const string UserNotFound = "Api.User.NotFound";
+            public const string UserWasPresentedBefore = "Api.User.PresentedBefore";
         }
         public static class ElectionCandidateTypeMessage
         {
