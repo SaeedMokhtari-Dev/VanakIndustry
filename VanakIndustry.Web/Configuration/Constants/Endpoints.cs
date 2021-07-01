@@ -53,6 +53,20 @@ namespace VanakIndustry.Web.Configuration.Constants
         #endregion
         
         
+        #region  ElectionCandidate
+
+        public const string ApiElectionCandidateGet = "/api/election-candidate/get";
+
+        #endregion
+        
+        #region  SelectElectionCandidate
+
+        public const string ApiSelectElectionCandidateGet = "/api/select-election-candidate/get";
+        public const string ApiSelectElectionCandidateAdd = "/api/select-election-candidate/add";
+
+        #endregion
+        
+        
 
         public const string ApiLog = "/api/log";
         public const string Swagger = "/swagger/v1/swagger.json";
