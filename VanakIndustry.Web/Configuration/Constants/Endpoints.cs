@@ -66,6 +66,12 @@ namespace VanakIndustry.Web.Configuration.Constants
 
         #endregion
         
+        #region  Attachment
+
+        public const string ApiAttachmentDetail = "/api/attachment/detail";
+
+        #endregion
+        
         
 
         public const string ApiLog = "/api/log";
