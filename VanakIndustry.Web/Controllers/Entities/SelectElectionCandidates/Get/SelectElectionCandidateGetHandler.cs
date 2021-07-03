@@ -30,7 +30,7 @@ namespace VanakIndustry.Web.Controllers.Entities.SelectElectionCandidates.Get
                 .OrderByDescending(w => w.Id)
                 .Select(w => new SelectElectionCandidateGetResponse()
                 {
-                    Key = w.Id,
+                    Key = w.ElectionCandidateId,
                     ElectionId = w.ElectionCandidate.ElectionId,
                     UserId = w.ElectionCandidate.UserId,
                     UserFullName = w.ElectionCandidate.User.FullName,

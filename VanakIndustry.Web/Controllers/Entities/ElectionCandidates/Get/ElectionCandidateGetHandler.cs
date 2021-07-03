@@ -37,7 +37,7 @@ namespace VanakIndustry.Web.Controllers.Entities.ElectionCandidates.Get
                 electionCandidateGetResponse.ElectionCandidateTypeId = electionLimit.ElectionCandidateTypeId;
                 electionCandidateGetResponse.ElectionCandidateTypeTitle = electionLimit.ElectionCandidateType.Title;
                 electionCandidateGetResponse.LimitCount = electionLimit.LimitCount;
-                electionCandidateGetResponse.ElectionCandidateGetResponseItems = await _context.ElectionCandidates
+                electionCandidateGetResponse.Items = await _context.ElectionCandidates
                     .Where(w => w.ElectionId == electionLimit.ElectionId &&
                                 w.ElectionCandidateTypeId == electionLimit.ElectionCandidateTypeId)
                     .Include(w => w.User)
@@ -49,6 +49,7 @@ namespace VanakIndustry.Web.Controllers.Entities.ElectionCandidates.Get
                         CandidatePictureId = w.User.CandidatePictureId ?? 0
                     })
                     .ToListAsync();
+                response.Add(electionCandidateGetResponse);
             }
             
             return ActionResult.Ok(response);

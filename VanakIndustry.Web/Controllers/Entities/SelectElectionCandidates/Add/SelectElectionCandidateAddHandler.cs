@@ -35,7 +35,16 @@ namespace VanakIndustry.Web.Controllers.Entities.SelectElectionCandidates.Add
             
             if(user.ElectionPresentUsers.All(w => w.ElectionId != request.ElectionId))
                 return ActionResult.Error(ApiMessages.InvalidRequest);
-                
+
+            var selectedCandidates = await _context.ElectionCandidates
+                .Where(w => request.ElectionCandidateIds.Contains(w.Id)).ToListAsync();
+            var limits = await _context.ElectionLimits.Where(w => w.ElectionId == request.ElectionId).ToListAsync();
+            foreach (var electionLimit in limits)
+            {
+                int electionCandidateCounts = selectedCandidates.Count(w => w.ElectionCandidateTypeId == electionLimit.LimitCount);
+                if(electionCandidateCounts > electionLimit.LimitCount)
+                    return ActionResult.Error(ApiMessages.SelectElectionCandidateMessage.MoreThanLimit);
+            }
             
             await AddSelectElectionCandidate(user, request);
             

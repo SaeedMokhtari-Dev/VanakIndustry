@@ -9,7 +9,7 @@ namespace VanakIndustry.Web.Controllers.Entities.ElectionCandidates.Get
         public long ElectionCandidateTypeId { get; set; }
         public string ElectionCandidateTypeTitle { get; set; }
         public int LimitCount { get; set; }
-        public List<ElectionCandidateGetResponseItem> ElectionCandidateGetResponseItems { get; set; }
+        public List<ElectionCandidateGetResponseItem> Items { get; set; }
     }
 
     public class ElectionCandidateGetResponseItem

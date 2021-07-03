@@ -43,6 +43,7 @@ namespace VanakIndustry.Web
             services.AddAutoMapper(typeof(AutoMapping));
             services.AddMvcCore().AddApiExplorer();
             services.ConfigureSwagger();
+            services.AddResponseCaching();
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
         }

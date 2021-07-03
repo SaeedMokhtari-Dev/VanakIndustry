@@ -72,6 +72,8 @@ namespace VanakIndustry.Core.Constants
             public const string AddedSuccessfully = "Api.SelectElectionCandidate.Add.Successful";
             public const string EditedSuccessfully = "Api.SelectElectionCandidate.Edit.Successful";
             public const string DeletedSuccessfully = "Api.SelectElectionCandidate.Deleted.Successful";
+            
+            public const string MoreThanLimit = "Api.SelectElectionCandidate.MoreThanLimit.NotAllowed";
         }
         public static class ElectionMessage
         {
@@ -84,6 +86,8 @@ namespace VanakIndustry.Core.Constants
             public const string CandidateAddedSuccessfully = "Api.Election.CandidateAdded.Successful";
             
             public const string EndDateShouldGreaterThanStartDate = "Api.Election.EndDateShouldGreaterThanStartDate";
+            public const string DontFindCurrentElection = "Api.Election.DontFindCurrentElection";
+            public const string UserIsNotPresent = "Api.Election.UserIsNotPresent";
         }
     }
 }

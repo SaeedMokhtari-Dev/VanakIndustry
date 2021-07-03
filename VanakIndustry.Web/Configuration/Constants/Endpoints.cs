@@ -49,6 +49,7 @@ namespace VanakIndustry.Web.Configuration.Constants
         public const string ApiElectionDelete = "/api/election/delete";
         public const string ApiElectionAddCandidate = "/api/election/add-candidate";
         public const string ApiElectionList = "/api/election/list";
+        public const string ApiElectionPresent = "/api/election/present";
 
         #endregion
         

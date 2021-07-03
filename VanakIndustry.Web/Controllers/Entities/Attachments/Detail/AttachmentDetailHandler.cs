@@ -33,8 +33,9 @@ namespace VanakIndustry.Web.Controllers.Entities.Attachments.Detail
             }
 
             //AttachmentDetailResponse response = _mapper.Map<AttachmentDetailResponse>(election);
-            
-            return ActionResult.Ok(String.Join("", attachment.Image.Select(Convert.ToChar)));
+            AttachmentDetailResponse response = new AttachmentDetailResponse();
+            response.Image = String.Join("", attachment.Image.Select(Convert.ToChar));
+            return ActionResult.Ok(response);
         }
     }
 }

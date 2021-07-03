@@ -37,8 +37,8 @@ namespace VanakIndustry.Web.Controllers.Entities.Elections.AddCandidate
             if(election == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             
-            if(election.StartDate <= DateTime.Now)
-                return ActionResult.Error(ApiMessages.Forbidden);
+            /*if(election.StartDate <= DateTime.Now)
+                return ActionResult.Error(ApiMessages.Forbidden);*/
             
             if(election.Deleted || election.Finalize)
                 return ActionResult.Error(ApiMessages.Forbidden);
